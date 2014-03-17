@@ -1,11 +1,3 @@
-#!/bin/sh
-
-set -e
-
-PIDFILE=/var/run/hostsd.pid
-HOSTS_FILE=/etc/hosts
-HOSTSD_DIR=/etc/hosts.d
-
 usage() {
 	cat >&2 <<-EOF
 	hostsd - Hosts file updater dameon
@@ -17,7 +9,7 @@ usage() {
 }
 
 watch_files() {
-	inotifywait $HOSTSD_DIR >/dev/null 2>&1
+	inotifywait "$1" >/dev/null 2>&1
 }
 
 find_files() {
@@ -48,24 +40,3 @@ setup_env() {
 clean_env() {
 	rm "$PIDFILE"
 }
-
-while getopts d:f:hp: opt
-do
-	case "$opt" in
-	d) HOSTSD_DIR="$OPTARG";;
-	f) HOSTS_FILE="$OPTARG";;
-	p) PIDFILE="$OPTARG";;
-	*) usage ;;
-	esac
-done
-
-setup_env
-
-trap clean_env EXIT SIGTERM
-
-while true
-do
-	watch_files
-	update_hosts_file "$HOSTSD_DIR" "$HOSTS_FILE"
-	wait
-done
