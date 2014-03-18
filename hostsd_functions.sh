@@ -29,7 +29,7 @@ merge_files() {
 	done
 }
 
-update_hosts_file() {
+create_hosts_file() {
 	find_files "$1" | merge_files "$1" > "$2"
 }
 

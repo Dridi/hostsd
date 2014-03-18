@@ -15,6 +15,6 @@ trap clean_env EXIT SIGTERM
 while true
 do
 	watch_files "$HOSTSD_DIR"
-	update_hosts_file "$HOSTSD_DIR" "$HOSTS_FILE"
+	create_hosts_file "$HOSTSD_DIR" "$HOSTS_FILE"
 	wait
 done
