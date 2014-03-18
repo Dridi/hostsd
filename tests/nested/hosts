@@ -1,0 +1,7 @@
+#[local4]
+127.0.0.1 localhost.localdomain localhost
+#[/local4]
+
+#[local6]
+::1       localhost6.localdomain6 localhost6
+#[/local6]
