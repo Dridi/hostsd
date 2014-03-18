@@ -1,6 +1,8 @@
 TEST_SCRIPTS = $(wildcard tests/*/tests.sh)
 TEST_RESULTS = $(TEST_SCRIPTS:tests/%/tests.sh=tests/%/tests.log)
 
+all: check
+
 build: hostsd
 
 hostsd: hostsd_defaults.sh hostsd_functions.sh  hostsd_main.sh
