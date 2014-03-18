@@ -27,4 +27,4 @@ dry-run: hostsd
 
 clean:
 	: make $@
-	@rm hostsd shellcheck.xml tests/*/tests.log
+	@rm -f hostsd shellcheck.xml $(TEST_RESULTS)
