@@ -1,18 +1,22 @@
+TARGET = hostsd
+
 TEST_SCRIPTS = $(wildcard tests/*/tests.sh)
 TEST_RESULTS = $(TEST_SCRIPTS:tests/%/tests.sh=tests/%/tests.log)
 
+TARGET_FILES = $(TARGET) $(TARGET).tar.gz shellcheck.xml $(TEST_RESULTS)
+
 all: check
 
-build: hostsd
+build: $(TARGET)
 
-hostsd: hostsd_defaults.sh hostsd_functions.sh  hostsd_main.sh
+$(TARGET): hostsd_defaults.sh hostsd_functions.sh  hostsd_main.sh
 	: make $@
 	@cat $^ > $@
 	@chmod +x $@
 
 check: shellcheck.xml $(TEST_RESULTS)
 
-shellcheck.xml: hostsd tests/*.sh $(TEST_SCRIPTS)
+shellcheck.xml: $(TARGET) tests/*.sh $(TEST_SCRIPTS)
 	: make $@
 	@shellcheck -f checkstyle $^ >$@
 
@@ -20,11 +24,17 @@ $(TEST_RESULTS): $(TEST_SCRIPTS) hostsd_*.sh
 	: make $@
 	@$< >$@
 
-dry-run: hostsd
-	./hostsd -f /dev/stdout -p hostsd.pid
+dist: $(TARGET).tar.gz
 
-.PHONY: clean
+$(TARGET).tar.gz:
+	: make $@
+	@git archive --format=tar.gz --prefix=hostsd/ -o hostsd.tar.gz HEAD
+
+dry-run: $(TARGET)
+	./$(TARGET) -f /dev/stdout -p dry-run.pid
+
+.PHONY: clean $(TARGET).tar.gz
 
 clean:
 	: make $@
-	@rm -f hostsd shellcheck.xml $(TEST_RESULTS)
+	@rm -f $(TARGET_FILES)
