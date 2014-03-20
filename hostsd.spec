@@ -9,13 +9,17 @@ URL:            https://github.com/dridi/hostsd
 Source0:        %{name}.tar.gz
 
 BuildRequires:  ShellCheck
+BuildRequires:  python-docutils
 BuildRequires:  shunit2
 
 Requires:       inotify-tools
 
 
 %description
-XXX
+With hostsd, it becomes possible to modularize the monolithic /etc/hosts file.
+
+Put your hosts fragments in /etd/hosts.d, let hostsd monitor them and update
+/etc/hosts for you.
 
 
 %prep
@@ -23,16 +27,12 @@ XXX
 
 
 %build
-make build
+make build man
 
 
 %install
 rm -rf %{buildroot}
-
-mkdir -p   %{buildroot}%{_sbindir}
-cp %{name} %{buildroot}%{_sbindir}
-
-# XXX %make_install
+%make_install prefix=%{_prefix}
 
 
 %check
@@ -42,6 +42,7 @@ make check
 %files
 # XXX %doc README
 %{_sbindir}/%{name}
+# XXX %{_mandir}/man8/%{name}.8*
 
 
 %changelog

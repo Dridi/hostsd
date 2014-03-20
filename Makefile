@@ -6,7 +6,11 @@ TEST_SCRIPTS = $(wildcard tests/*/tests.sh)
 TEST_RESULTS = $(TEST_SCRIPTS:tests/%/tests.sh=tests/%/tests.log)
 
 TARGET_RPMS  = $(foreach type, src noarch, $(TARGET)-$(VERSION)-1.$(type).rpm)
-TARGET_FILES = $(TARGET) $(TARGET).tar.gz shellcheck.xml $(TEST_RESULTS) $(TARGET_RPMS)
+TARGET_FILES = $(TARGET) $(TARGET).8 $(TARGET).tar.gz shellcheck.xml $(TEST_RESULTS) $(TARGET_RPMS)
+
+prefix  = /usr/local
+sbindir = $(prefix)/sbin
+mandir  = $(prefix)/share/man
 
 all: check man
 
@@ -31,6 +35,12 @@ man: $(TARGET).8
 
 $(TARGET).8:
 	: TODO make $@
+
+install: build man
+	install -m0755 -d $(DESTDIR)$(sbindir)
+	install -m0755 -t $(DESTDIR)$(sbindir) $(TARGET)
+	install -m0755 -d $(DESTDIR)$(mandir)/man8
+	#install -m0644 -d $(DESTDIR)$(mandir)/man8 $(TARGET).8
 
 dist: $(TARGET).tar.gz
 
@@ -60,7 +70,7 @@ $(TARGET_RPMS): dist
 dry-run: $(TARGET)
 	./$(TARGET) -f /dev/stdout -p dry-run.pid
 
-.PHONY: clean $(TARGET).tar.gz
+.PHONY: clean install $(TARGET).tar.gz
 
 clean:
 	: make $@
