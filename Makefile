@@ -8,7 +8,7 @@ TEST_RESULTS = $(TEST_SCRIPTS:tests/%/tests.sh=tests/%/tests.log)
 TARGET_RPMS  = $(foreach type, src noarch, $(TARGET)-$(VERSION)-1.$(type).rpm)
 TARGET_FILES = $(TARGET) $(TARGET).tar.gz shellcheck.xml $(TEST_RESULTS) $(TARGET_RPMS)
 
-all: check
+all: check man
 
 build: $(TARGET)
 
@@ -26,6 +26,11 @@ shellcheck.xml: $(TARGET) tests/*.sh $(TEST_SCRIPTS)
 $(TEST_RESULTS): $(TEST_SCRIPTS) hostsd_*.sh
 	: make $@
 	@$< >$@
+
+man: $(TARGET).8
+
+$(TARGET).8:
+	: TODO make $@
 
 dist: $(TARGET).tar.gz
 
