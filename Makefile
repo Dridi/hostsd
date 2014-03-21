@@ -33,14 +33,18 @@ $(TEST_RESULTS): $(TEST_SCRIPTS) hostsd_*.sh
 
 man: $(TARGET).8
 
-$(TARGET).8:
-	: TODO make $@
+man-show: man
+	man -l $(TARGET).8
+
+%.8: %.8.rst
+	: make $@
+	rst2man $< $@
 
 install: build man
 	install -m0755 -d $(DESTDIR)$(sbindir)
 	install -m0755 -t $(DESTDIR)$(sbindir) $(TARGET)
 	install -m0755 -d $(DESTDIR)$(mandir)/man8
-	#install -m0644 -d $(DESTDIR)$(mandir)/man8 $(TARGET).8
+	install -m0644 -t $(DESTDIR)$(mandir)/man8 $(TARGET).8
 
 dist: $(TARGET).tar.gz
 

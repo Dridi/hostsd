@@ -1,7 +1,7 @@
 Name:           hostsd
 Version:        %{?version}%{?!version:0}
 Release:        1%{?dist}
-Summary:        Service for a modular /etc/hosts
+Summary:        Hosts file updater daemon
 BuildArch:      noarch
 
 License:        BSD
@@ -18,7 +18,7 @@ Requires:       inotify-tools
 %description
 With hostsd, it becomes possible to modularize the monolithic /etc/hosts file.
 
-Put your hosts fragments in /etd/hosts.d, let hostsd monitor them and update
+Put your hosts fragments in /etc/hosts.d, let hostsd monitor them and update
 /etc/hosts for you.
 
 
@@ -42,7 +42,7 @@ make check
 %files
 # XXX %doc README
 %{_sbindir}/%{name}
-# XXX %{_mandir}/man8/%{name}.8*
+%{_mandir}/man8/%{name}.8*
 
 
 %changelog

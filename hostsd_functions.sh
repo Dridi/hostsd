@@ -1,6 +1,6 @@
 usage() {
 	cat >&2 <<-EOF
-	hostsd - Hosts file updater dameon
+	hostsd - Hosts file updater daemon
 
 	Usage: $0 [-d HOSTSD_DIR] [-f HOSTS_FILE] [-p PIDFILE]
 	       $0 -h
