@@ -48,6 +48,9 @@ $(TARGET).tar.gz:
 	: make $@
 	@git archive --format=tar.gz --prefix=$(TARGET)-$(VERSION)/ -o $@ HEAD
 
+rpmlint: $(TARGET_RPMS) $(TARGET).spec
+	rpmlint $^
+
 srpm: $(TARGET)-$(VERSION)-1.src.rpm
 
 rpm:  $(TARGET)-$(VERSION)-1.noarch.rpm
