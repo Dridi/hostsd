@@ -11,8 +11,11 @@ Source0:        %{name}.tar.gz
 BuildRequires:  ShellCheck
 BuildRequires:  python-docutils
 BuildRequires:  shunit2
+BuildRequires:  systemd
 
 Requires:       inotify-tools
+
+%systemd_requires
 
 
 %description
@@ -43,6 +46,19 @@ make check
 # XXX %doc README
 %{_sbindir}/%{name}
 %{_mandir}/man8/%{name}.8*
+%{_unitdir}/%{name}.service
+
+
+%post
+%systemd_post %{name}.service
+
+
+%preun
+%systemd_preun %{name}.service
+
+
+%postun
+%systemd_postun_with_restart %{name}.service
 
 
 %changelog

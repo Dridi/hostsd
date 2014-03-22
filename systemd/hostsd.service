@@ -1,0 +1,12 @@
+[Unit]
+Description=Hosts file updater daemon
+Documentation=man:hostsd(8)
+Requires=local-fs.target
+Wants=nss-lookup.target
+Before=nss-lookup.target
+After=local-fs.target
+
+[Service]
+Type=simple
+PIDFile=/var/run/hostsd.pid
+ExecStart=/usr/sbin/hostsd

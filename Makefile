@@ -11,6 +11,7 @@ TARGET_FILES = $(TARGET) man/$(TARGET).8 $(TARGET).tar.gz shellcheck.xml $(TEST_
 prefix  = /usr/local
 sbindir = $(prefix)/sbin
 mandir  = $(prefix)/share/man
+unitdir = $(prefix)/lib/systemd/system
 
 all: check man
 
@@ -45,6 +46,8 @@ install: build man
 	install -m0755 -t $(DESTDIR)$(sbindir) $(TARGET)
 	install -m0755 -d $(DESTDIR)$(mandir)/man8
 	install -m0644 -t $(DESTDIR)$(mandir)/man8 man/$(TARGET).8
+	install -m0755 -d $(DESTDIR)$(unitdir)
+	install -m0644 -t $(DESTDIR)$(unitdir) systemd/$(TARGET).service
 
 dist: $(TARGET).tar.gz
 

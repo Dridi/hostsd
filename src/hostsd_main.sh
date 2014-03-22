@@ -12,6 +12,8 @@ setup_env
 
 trap clean_env EXIT SIGTERM
 
+create_hosts_file "$HOSTSD_DIR" "$HOSTS_FILE"
+
 while true
 do
 	watch_files "$HOSTSD_DIR"
