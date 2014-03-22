@@ -6,7 +6,7 @@ TEST_SCRIPTS = $(wildcard tests/*/tests.sh)
 TEST_RESULTS = $(TEST_SCRIPTS:tests/%/tests.sh=tests/%/tests.log)
 
 TARGET_RPMS  = $(foreach type, src noarch, $(TARGET)-$(VERSION)-1.$(type).rpm)
-TARGET_FILES = $(TARGET) $(TARGET).8 $(TARGET).tar.gz shellcheck.xml $(TEST_RESULTS) $(TARGET_RPMS)
+TARGET_FILES = $(TARGET) man/$(TARGET).8 $(TARGET).tar.gz shellcheck.xml $(TEST_RESULTS) $(TARGET_RPMS)
 
 prefix  = /usr/local
 sbindir = $(prefix)/sbin
@@ -16,7 +16,7 @@ all: check man
 
 build: $(TARGET)
 
-$(TARGET): hostsd_defaults.sh hostsd_functions.sh  hostsd_main.sh
+$(TARGET): $(foreach f, defaults functions main, src/$(TARGET)_$(f).sh)
 	: make $@
 	@cat $^ > $@
 	@chmod +x $@
@@ -27,24 +27,24 @@ shellcheck.xml: $(TARGET) tests/*.sh $(TEST_SCRIPTS)
 	: make $@
 	@shellcheck -f checkstyle $^ >$@
 
-$(TEST_RESULTS): $(TEST_SCRIPTS) hostsd_*.sh
+$(TEST_RESULTS): $(TEST_SCRIPTS) src/*
 	: make $@
 	@$< >$@
 
-man: $(TARGET).8
+man: man/$(TARGET).8
 
 man-show: man
-	man -l $(TARGET).8
+	man -l man/$(TARGET).8
 
-%.8: %.8.rst
+man/%: man/%.rst
 	: make $@
-	rst2man $< $@
+	@rst2man $< $@
 
 install: build man
 	install -m0755 -d $(DESTDIR)$(sbindir)
 	install -m0755 -t $(DESTDIR)$(sbindir) $(TARGET)
 	install -m0755 -d $(DESTDIR)$(mandir)/man8
-	install -m0644 -t $(DESTDIR)$(mandir)/man8 $(TARGET).8
+	install -m0644 -t $(DESTDIR)$(mandir)/man8 man/$(TARGET).8
 
 dist: $(TARGET).tar.gz
 
@@ -52,7 +52,7 @@ $(TARGET).tar.gz:
 	: make $@
 	@git archive --format=tar.gz --prefix=$(TARGET)-$(VERSION)/ -o $@ HEAD
 
-rpmlint: $(TARGET_RPMS) $(TARGET).spec
+rpmlint: $(TARGET_RPMS) rpm/$(TARGET).spec
 	rpmlint $^
 
 srpm: $(TARGET)-$(VERSION)-1.src.rpm
@@ -64,7 +64,7 @@ rpm:  $(TARGET)-$(VERSION)-1.noarch.rpm
 	@rpmbuild --quiet --rebuild $< -D'dist %nil'
 	@mv $(shell rpm --eval '%_rpmdir')/noarch/$@ .
 
-$(TARGET)-$(VERSION)-1.src.rpm: $(TARGET).spec dist
+$(TARGET)-$(VERSION)-1.src.rpm: rpm/$(TARGET).spec dist
 	: make $@
 	@rpmbuild --quiet -bs $< \
 		-D'_sourcedir $(PWD)' \

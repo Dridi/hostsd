@@ -2,7 +2,7 @@
 #
 # Simple tests with a simple drop-in directory containing a nested directory.
 
-. "$PWD"/hostsd_functions.sh
+. "$PWD"/src/hostsd_functions.sh
 . "$PWD"/tests/helpers.sh
 
 test_find_files() {
