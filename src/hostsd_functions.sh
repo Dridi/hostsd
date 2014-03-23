@@ -38,5 +38,8 @@ setup_env() {
 }
 
 clean_env() {
+	local jobs_pids="$(jobs -p)"
+	# shellcheck disable=SC2086
+	[ -n "$jobs_pids" ] && kill $jobs_pids
 	rm "$PIDFILE"
 }

@@ -10,13 +10,13 @@ done
 
 setup_env
 
-trap clean_env EXIT SIGTERM
+trap clean_env EXIT
+trap "exit 0"  SIGTERM
 
 create_hosts_file "$HOSTSD_DIR" "$HOSTS_FILE"
 
 while true
 do
-	watch_files "$HOSTSD_DIR"
-	create_hosts_file "$HOSTSD_DIR" "$HOSTS_FILE"
+	watch_files "$HOSTSD_DIR" && create_hosts_file "$HOSTSD_DIR" "$HOSTS_FILE" &
 	wait
 done
