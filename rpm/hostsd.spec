@@ -30,7 +30,7 @@ Put your hosts fragments in /etc/hosts.d, let hostsd monitor them and update
 
 
 %build
-make build man
+make build docs
 
 
 %install
@@ -43,7 +43,7 @@ make check
 
 
 %files
-# XXX %doc README
+%doc LICENSE README.html
 %{_sbindir}/%{name}
 %{_mandir}/man8/%{name}.8*
 %{_unitdir}/%{name}.service
@@ -62,3 +62,5 @@ make check
 
 
 %changelog
+* Tue Mar 25 2014 Dridi Boukelmoune <dridi.boukelmoune[at]gmail.com> 0.1-1
+- Initial spec

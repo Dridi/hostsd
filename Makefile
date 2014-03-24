@@ -6,14 +6,14 @@ TEST_SCRIPTS = $(wildcard tests/*/tests.sh)
 TEST_RESULTS = $(TEST_SCRIPTS:tests/%/tests.sh=tests/%/tests.log)
 
 TARGET_RPMS  = $(foreach type, src noarch, $(TARGET)-$(VERSION)-1.$(type).rpm)
-TARGET_FILES = $(TARGET) man/$(TARGET).8 $(TARGET).tar.gz shellcheck.xml $(TEST_RESULTS) $(TARGET_RPMS)
+TARGET_FILES = $(TARGET) README.html man/$(TARGET).8 $(TARGET).tar.gz shellcheck.xml $(TEST_RESULTS) $(TARGET_RPMS)
 
 prefix  = /usr/local
 sbindir = $(prefix)/sbin
 mandir  = $(prefix)/share/man
 unitdir = $(prefix)/lib/systemd/system
 
-all: check man
+all: check docs
 
 build: $(TARGET)
 
@@ -31,6 +31,12 @@ shellcheck.xml: $(TARGET) tests/*.sh $(TEST_SCRIPTS)
 $(TEST_RESULTS): $(TEST_SCRIPTS) src/*
 	: make $@
 	@$< >$@
+
+docs: README.html man
+
+%.html: %.rst
+	: make $@
+	@rst2html $< $@
 
 man: man/$(TARGET).8
 

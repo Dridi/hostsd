@@ -1,4 +1,5 @@
 hostsd
 hostsd.8
+*.html
 *.xml
 *.log
