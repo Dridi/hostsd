@@ -61,24 +61,24 @@ and the init system should handle this behaviour.
 OPTIONS
 =======
 
+.. |defaults| replace::
+
+   but is not meant to be changed. It exists mainly for testing purposes but
+   could prove useful to modularize /etc/hosts in a **chroot**\ (1) environment.
+
 **-d** *HOSTSD_DIR*
    The drop-in directory to watch. HOSTSD_DIR defaults to /etc/hosts.d
-   but is not meant to be changed. It exists mainly for testing purposes
-   but could prove useful to modularize /etc/hosts in a chroot environment.
+   |defaults|
 
 **-f** *HOSTS_FILE*
-   The hosts file to modularize. HOSTS_FILE defaults to /etc/hosts but is
-   not meant to be changed. It exists mainly for testing purposes but could
-   prove useful to modularize /etc/hosts in a chroot environment.
+   The hosts file to modularize. HOSTS_FILE defaults to /etc/hosts |defaults|
 
 **-h**
    Displays hostsd's usage summary and exits.
 
 **-p** *PIDFILE*
    Write the process's PID to the specified file. PIDFILE defaults to
-   /var/run/hostsd.pid but is not meant to be changed. It exists mainly for
-   testing purposes but could prove useful to modularize /etc/hosts in a
-   chroot environment.
+   /var/run/hostsd.pid |defaults|
 
 SEE ALSO
 ========
